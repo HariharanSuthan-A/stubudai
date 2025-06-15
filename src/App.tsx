@@ -1,3 +1,4 @@
+import AdBox from "./components/AdBox";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -22,6 +23,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* 👇 Global ad visible on all pages */}
+        <AdBox />
+
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/generate" element={<Generate />} />
@@ -31,12 +35,12 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/copyright" element={<Copyright />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
+
 
 export default App;
