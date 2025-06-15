@@ -1,36 +1,38 @@
 import { useEffect, useRef } from 'react';
 
 const AdBox = () => {
-  const adRef = useRef(null);
+  const adRef = useRef<HTMLDivElement>(null); // Strongly type the ref
 
   useEffect(() => {
-    const atOptions = {
-      key: 'c9f2fc1c3e2b83a6b037979a7f5ce639',
-      format: 'iframe',
-      height: 50,
-      width: 320,
-      params: {}
-    };
+    // Check if already injected to avoid duplication
+    if (adRef.current && !adRef.current.querySelector('script')) {
+      // Set ad container ID (required for some ad scripts)
+      adRef.current.id = 'c9f2fc1c3e2b83a6b037979a7f5ce639';
 
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//www.highperformanceformat.com/c9f2fc1c3e2b83a6b037979a7f5ce639/invoke.js';
-    script.async = true;
+      // Inject script
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = '//www.highperformanceformat.com/c9f2fc1c3e2b83a6b037979a7f5ce639/invoke.js';
+      script.async = true;
 
-    // Attach to container
-    if (adRef.current) {
       adRef.current.appendChild(script);
     }
 
     return () => {
-      // Clean up on unmount
+      // Cleanup to prevent duplicate ads on re-render
       if (adRef.current) {
         adRef.current.innerHTML = '';
       }
     };
   }, []);
 
-  return <div ref={adRef}></div>;
+  // Styling for ad box to reserve space
+  return (
+    <div
+      ref={adRef}
+      style={{ width: '320px', height: '50px', margin: '10px auto' }}
+    />
+  );
 };
 
 export default AdBox;
